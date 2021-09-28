@@ -25,7 +25,7 @@ go get -u github.com/qmdx00/lifecycle
 
 ## 🛠 How to use
 
-Just Implement Server interface, then Attach servers to Application, Here is an example.
+Just implement server interface, then attach servers to application, here is an example.
 
 ```go
 package main
