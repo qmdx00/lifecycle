@@ -6,6 +6,8 @@
 [![codecov](https://codecov.io/gh/qmdx00/lifecycle/branch/master/graph/badge.svg?token=MVJ5OIUYSK)](https://codecov.io/gh/qmdx00/lifecycle)
 [![Build Status](https://app.travis-ci.com/qmdx00/lifecycle.svg?branch=master)](https://app.travis-ci.com/qmdx00/lifecycle)
 
+[English](./README.md) | 中文
+
 ## 📖 介绍
 
 一个简单的应用生命周期管理工具，方便接入多个服务实例。

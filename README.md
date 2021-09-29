@@ -6,6 +6,8 @@
 [![codecov](https://codecov.io/gh/qmdx00/lifecycle/branch/master/graph/badge.svg?token=MVJ5OIUYSK)](https://codecov.io/gh/qmdx00/lifecycle)
 [![Build Status](https://app.travis-ci.com/qmdx00/lifecycle.svg?branch=master)](https://app.travis-ci.com/qmdx00/lifecycle)
 
+English | [中文](./README_ZH.md)
+
 ## 📖 Introduction
 
 A simple application lifecycle management tool with multiple servers.
