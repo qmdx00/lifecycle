@@ -10,22 +10,22 @@ import (
 
 func TestWithID(t *testing.T) {
 	id := "test"
-	opts := options{id: id}
-	WithID(id)
+	opts := options{}
+	WithID(id)(&opts)
 	assert.Equal(t, id, opts.id)
 }
 
 func TestWithName(t *testing.T) {
 	name := "test"
-	opts := options{name: name}
-	WithName(name)
+	opts := options{}
+	WithName(name)(&opts)
 	assert.Equal(t, name, opts.name)
 }
 
 func TestWithVersion(t *testing.T) {
 	version := "v1.0"
-	opts := options{version: version}
-	WithVersion(version)
+	opts := options{}
+	WithVersion(version)(&opts)
 	assert.Equal(t, version, opts.version)
 }
 
@@ -33,21 +33,21 @@ func TestWithMetadata(t *testing.T) {
 	meta := map[string]string{
 		"test": "test",
 	}
-	opts := options{metadata: meta}
-	WithMetadata(meta)
+	opts := options{}
+	WithMetadata(meta)(&opts)
 	assert.Equal(t, meta, opts.metadata)
 }
 
 func TestWithSignal(t *testing.T) {
 	sigs := []os.Signal{syscall.SIGTERM}
-	opts := options{sigs: sigs}
-	WithSignal(sigs...)
+	opts := options{}
+	WithSignal(sigs...)(&opts)
 	assert.Equal(t, sigs, opts.sigs)
 }
 
 func TestWithContext(t *testing.T) {
 	ctx := context.Background()
-	opts := options{ctx: ctx}
-	WithContext(ctx)
+	opts := options{}
+	WithContext(ctx)(&opts)
 	assert.Equal(t, ctx, opts.ctx)
 }
