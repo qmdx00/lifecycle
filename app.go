@@ -94,7 +94,9 @@ func (a *App) Run() (_ error) {
 
 		group.Go(func() error {
 			<-ctx.Done()
-			return srv.Stop(ctx)
+			_ctx, cancel := context.WithTimeout(ctx, a.opts.stopTimeout)
+			defer cancel()
+			return srv.Stop(_ctx)
 		})
 
 		wg.Add(1)

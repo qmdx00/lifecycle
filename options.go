@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"syscall"
+	"time"
 )
 
 // Option application option
@@ -17,15 +18,17 @@ type options struct {
 	metadata map[string]string
 
 	// sigs signals for application shutdown
-	sigs []os.Signal
-	ctx  context.Context
+	sigs        []os.Signal
+	ctx         context.Context
+	stopTimeout time.Duration
 }
 
 // defaultOptions default options
 var defaultOptions = options{
-	metadata: make(map[string]string),
-	sigs:     []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
-	ctx:      context.Background(),
+	metadata:    make(map[string]string),
+	sigs:        []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
+	ctx:         context.Background(),
+	stopTimeout: time.Second,
 }
 
 // WithID with application id
@@ -56,4 +59,9 @@ func WithSignal(sigs ...os.Signal) Option {
 // WithContext with service context
 func WithContext(ctx context.Context) Option {
 	return func(o *options) { o.ctx = ctx }
+}
+
+// WithStopTimeout with app stop timeout.
+func WithStopTimeout(timeout time.Duration) Option {
+	return func(o *options) { o.stopTimeout = timeout }
 }

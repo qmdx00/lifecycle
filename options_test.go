@@ -6,6 +6,7 @@ import (
 	"os"
 	"syscall"
 	"testing"
+	"time"
 )
 
 func TestWithID(t *testing.T) {
@@ -50,4 +51,11 @@ func TestWithContext(t *testing.T) {
 	opts := options{}
 	WithContext(ctx)(&opts)
 	assert.Equal(t, ctx, opts.ctx)
+}
+
+func TestWithStopTimeout(t *testing.T) {
+	timeout := time.Second
+	opts := options{}
+	WithStopTimeout(timeout)(&opts)
+	assert.Equal(t, timeout, opts.stopTimeout)
 }
