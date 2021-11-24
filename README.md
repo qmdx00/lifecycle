@@ -52,7 +52,7 @@ func main() {
     })
 
     if err := app.Run(); err != nil {
-        panic(err)
+        log.Fatal(err)
     }
 }
 
@@ -76,11 +76,13 @@ type EchoServer struct {
 
 func (e *EchoServer) Run(ctx context.Context) error {
     info, _ := lifecycle.FromContext(ctx)
-    log.Println(info.Name(), info.Version())
+    log.Printf("server %s start\n", info.Name())
     return e.srv.ListenAndServe()
 }
 
 func (e *EchoServer) Stop(ctx context.Context) error {
+    info, _ := lifecycle.FromContext(ctx)
+    log.Printf("server %s stop\n", info.Name())
     return e.srv.Shutdown(ctx)
 }
 ```
