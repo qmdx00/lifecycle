@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"golang.org/x/sync/errgroup"
+	"net/http"
 	"os"
 	"os/signal"
 	"sync"
@@ -22,7 +23,7 @@ type App struct {
 }
 
 // cleanup ...
-type cleanup func()
+type cleanup func() error
 
 // ID ...
 func (a *App) ID() string {
@@ -46,14 +47,14 @@ func (a *App) Metadata() map[string]string {
 
 // NewApp ...
 func NewApp(opts ...Option) *App {
-	// context with cancel
-	ctx, cancel := context.WithCancel(context.Background())
-
 	// override default options
 	_opts := defaultOptions
 	for _, o := range opts {
 		o(&_opts)
 	}
+
+	// context with cancel
+	ctx, cancel := context.WithCancel(context.Background())
 
 	return &App{
 		Mutex:    sync.Mutex{},
@@ -94,7 +95,7 @@ func (a *App) Run() (_ error) {
 
 		group.Go(func() error {
 			<-ctx.Done()
-			_ctx, cancel := context.WithTimeout(ctx, a.opts.stopTimeout)
+			_ctx, cancel := context.WithTimeout(NewContext(context.Background(), a), a.opts.stopTimeout)
 			defer cancel()
 			return srv.Stop(_ctx)
 		})
@@ -119,7 +120,9 @@ func (a *App) Run() (_ error) {
 			case <-ctx.Done():
 				return ctx.Err()
 			case <-sigs:
-				return a.Shutdown()
+				if err := a.Shutdown(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+					return err
+				}
 			}
 		}
 	})
@@ -138,7 +141,9 @@ func (a *App) Shutdown() (_ error) {
 	}
 	// do cleanups
 	for _, _cleanup := range a.cleanups {
-		_cleanup()
+		if err := _cleanup(); err != nil {
+			return err
+		}
 	}
 	return
 }

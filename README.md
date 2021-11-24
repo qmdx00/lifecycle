@@ -46,8 +46,9 @@ func main() {
     )
 
     app.Attach("echo", NewEchoServer())
-    app.Cleanup(func() {
+    app.Cleanup(func() error {
         log.Println("do cleanup")
+        return nil
     })
 
     if err := app.Run(); err != nil {
